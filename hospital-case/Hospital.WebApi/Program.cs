@@ -1,6 +1,8 @@
-using Hospital.Application;
+using Hospital.Domain.Policies;
 using Hospital.Infrastructure.Persistance;
+using Hospital.Infrastructure.Polices;
 using Hospital.Infrastructure.Repository;
+using Hospital.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +12,7 @@ builder.Services.AddDbContext<AppointmentDbContext>(options =>
     options.UseInMemoryDatabase("HospitalDb"));
 builder.Services.AddScoped<AppointmentRepository>();
 builder.Services.AddScoped<AppointmentService>(); 
+builder.Services.AddScoped<IDepartmentPolicy, GeneralPracticePolicy>();
 
 var app = builder.Build();
 

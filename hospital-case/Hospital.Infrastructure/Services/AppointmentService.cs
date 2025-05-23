@@ -1,8 +1,7 @@
 ﻿using Hospital.Domain.Entities;
 using Hospital.Infrastructure.Repository;
-using Hospital.Infrastructure.Services;
 
-namespace Hospital.Application;
+namespace Hospital.Infrastructure.Services;
 
 public class AppointmentService(AppointmentRepository appointmentRepository)
 {
