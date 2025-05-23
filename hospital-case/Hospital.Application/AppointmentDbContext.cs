@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Hospital.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hospital.Application;
 

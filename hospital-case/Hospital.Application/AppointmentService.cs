@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Hospital.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hospital.Application;
 
@@ -77,14 +78,7 @@ public class AppointmentService(AppointmentRepository appointmentRepository)
             return false;
         }
 
-        await appointmentRepository.AddAsync(new Appointment
-        {
-            Cpr = cpr,
-            PatientName = patientName,
-            AppointmentDate = appointmentDate,
-            Department = department,
-            DoctorName = doctorName
-        });
+        await appointmentRepository.AddAsync(Appointment.Create(cpr, patientName, appointmentDate, department, doctorName));
 
         Console.WriteLine($"[LOG] Appointment successfully scheduled for {patientName} (CPR: {cpr})");
         return true;

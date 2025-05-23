@@ -1,6 +1,10 @@
-﻿namespace Hospital.Application;
+﻿using Hospital.Application.Interfaces;
+using Hospital.Domain.Entities;
 
-public class AppointmentRepository(AppointmentDbContext dbContext)
+namespace Hospital.Application;
+
+
+public class AppointmentRepository(AppointmentDbContext dbContext) : IAppointmentRepository
 {
     public async Task AddAsync(Appointment appointment)
     {
