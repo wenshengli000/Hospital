@@ -1,4 +1,6 @@
-﻿public record ScheduleResult
+﻿namespace Hospital.Application.Commands;
+
+public record ScheduleResult
 {
     public bool IsSuccess { get; init; }
     public string ErrorMessage { get; init; } = string.Empty;

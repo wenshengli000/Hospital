@@ -2,10 +2,11 @@
 
 namespace Hospital.Infrastructure.Services;
 
-public class NationalRegistryCprValidator_: ICprValidator
+public class NationalRegistryCprValidator: ICprValidator
 {
     public Task<bool> ValidateAsync(string cpr)
     {
-        throw new NotImplementedException();
+        Console.WriteLine($"[LOG] Validating CPR: {cpr}");
+        return Task.FromResult(true); // Dummy response
     }
 }

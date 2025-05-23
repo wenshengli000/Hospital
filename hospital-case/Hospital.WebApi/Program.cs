@@ -1,3 +1,4 @@
+using Hospital.Application.Interfaces;
 using Hospital.Domain.Policies;
 using Hospital.Infrastructure.Persistance;
 using Hospital.Infrastructure.Polices;
@@ -13,6 +14,7 @@ builder.Services.AddDbContext<AppointmentDbContext>(options =>
 builder.Services.AddScoped<AppointmentRepository>();
 builder.Services.AddScoped<AppointmentService>(); 
 builder.Services.AddScoped<IDepartmentPolicy, GeneralPracticePolicy>();
+builder.Services.AddSingleton<ICprValidator, NationalRegistryCprValidator>();
 
 var app = builder.Build();
 
