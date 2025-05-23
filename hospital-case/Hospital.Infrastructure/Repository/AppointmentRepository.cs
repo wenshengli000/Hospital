@@ -1,13 +1,13 @@
 ﻿using Hospital.Application.Interfaces;
 using Hospital.Domain.Entities;
+using Hospital.Infrastructure.Persistance;
 
-namespace Hospital.Infrastructure.Repository
+namespace Hospital.Infrastructure.Repository;
+public class AppointmentRepository(AppointmentDbContext dbContext) : IAppointmentRepository
 {
-    public class AppointmentRepository: IAppointmentRepository
+    public async Task AddAsync(Appointment appointment)
     {
-        public Task AddAsync(Appointment appointment)
-        {
-            throw new NotImplementedException();
-        }
+        dbContext.Appointments.Add(appointment);
+        await dbContext.SaveChangesAsync();
     }
 }

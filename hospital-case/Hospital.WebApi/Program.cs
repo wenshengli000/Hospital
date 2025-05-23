@@ -1,4 +1,6 @@
 using Hospital.Application;
+using Hospital.Infrastructure.Persistance;
+using Hospital.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

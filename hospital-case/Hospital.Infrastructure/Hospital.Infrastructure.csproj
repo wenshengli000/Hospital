@@ -7,11 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
-    <Folder Include="Polices\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\ClassLibrary1\Hospital.Domain.csproj" />
     <ProjectReference Include="..\Hospital.Application\Hospital.Application.csproj" />
   </ItemGroup>

@@ -1,7 +1,7 @@
 ﻿using Hospital.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Hospital.Application;
+namespace Hospital.Infrastructure.Persistance;
 
 public class AppointmentDbContext : DbContext
 {

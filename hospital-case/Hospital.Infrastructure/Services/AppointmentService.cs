@@ -1,5 +1,6 @@
 ﻿using Hospital.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
+using Hospital.Infrastructure.Repository;
+using Hospital.Infrastructure.Services;
 
 namespace Hospital.Application;
 
