@@ -5,7 +5,7 @@ namespace Hospital.Infrastructure.Polices;
 
 public class GeneralPracticePolicy: IDepartmentPolicy
 {
-    public string DepartmentNaem  => "General Practice";
+    public string DepartmentName  => "General Practice";
     public Task<ValidationResult> ValidateAsync(Appointment appointment)
     {
         if (!IsAssignedToGP(appointment.Cpr, appointment.DoctorName))
@@ -15,7 +15,8 @@ public class GeneralPracticePolicy: IDepartmentPolicy
             return Task.FromResult(ValidationResult.Failure(errorMessage));
         }
 
-        return Task.FromResult(ValidationResult.Success());
+        var result = ValidationResult.Success();
+        return Task.FromResult(result);
     }
 
     private bool IsAssignedToGP(string cpr, string doctorName)

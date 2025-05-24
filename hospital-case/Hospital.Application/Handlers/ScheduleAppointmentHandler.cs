@@ -20,7 +20,7 @@ public class ScheduleAppointmentHandler(
         var appointment = Appointment.Create(cmd.Cpr, cmd.PatientName, cmd.Date, cmd.Department, cmd.Doctor);
 
         var policy = policies.FirstOrDefault(p =>
-            p.DepartmentNaem.Equals(appointment.Department, StringComparison.OrdinalIgnoreCase));
+            p.DepartmentName.Equals(appointment.Department, StringComparison.OrdinalIgnoreCase));
 
         if (policy == null)
             return ScheduleResult.Failure($"Unsupported department: {appointment.Department}");
