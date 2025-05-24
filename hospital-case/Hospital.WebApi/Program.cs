@@ -14,6 +14,9 @@ builder.Services.AddDbContext<AppointmentDbContext>(options =>
 builder.Services.AddScoped<AppointmentRepository>();
 builder.Services.AddScoped<AppointmentService>(); 
 builder.Services.AddScoped<IDepartmentPolicy, GeneralPracticePolicy>();
+builder.Services.AddScoped<IDepartmentPolicy, PhysiotherapyPolicy>();
+builder.Services.AddScoped<IDepartmentPolicy, RadiologyPolicy>();
+builder.Services.AddScoped<IDepartmentPolicy, SurgeryPolicy>();
 builder.Services.AddSingleton<ICprValidator, NationalRegistryCprValidator>();
 
 var app = builder.Build();
