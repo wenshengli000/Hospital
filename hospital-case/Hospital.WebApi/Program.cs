@@ -1,9 +1,12 @@
+using Hospital.Application.Commands;
+using Hospital.Application.Handlers;
 using Hospital.Application.Interfaces;
 using Hospital.Domain.Policies;
 using Hospital.Infrastructure.Persistance;
 using Hospital.Infrastructure.Polices;
 using Hospital.Infrastructure.Repository;
 using Hospital.Infrastructure.Services;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,12 +15,18 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppointmentDbContext>(options =>
     options.UseInMemoryDatabase("HospitalDb"));
 builder.Services.AddScoped<AppointmentRepository>();
-builder.Services.AddScoped<AppointmentService>(); 
 builder.Services.AddScoped<IDepartmentPolicy, GeneralPracticePolicy>();
 builder.Services.AddScoped<IDepartmentPolicy, PhysiotherapyPolicy>();
 builder.Services.AddScoped<IDepartmentPolicy, RadiologyPolicy>();
 builder.Services.AddScoped<IDepartmentPolicy, SurgeryPolicy>();
+builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+builder.Services.AddScoped<IAppointmentValidator, ApointmentValidator>();
 builder.Services.AddSingleton<ICprValidator, NationalRegistryCprValidator>();
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssemblyContaining<ScheduleAppointmentHandler>();
+});
+
 
 var app = builder.Build();
 
@@ -25,17 +34,24 @@ var app = builder.Build();
 
 app.UseHttpsRedirection();
 
-app.MapPost("/appointments", async (AppointmentRequest request, AppointmentService appointmentService) =>
+app.MapPost("/appointments", async (AppointmentRequest request, IMediator mediator) =>
 {
-    var result = await appointmentService.ScheduleAppointment(
-        request.Cpr, request.PatientName, request.AppointmentDate,
-        request.Department, request.DoctorName);
+    var command = new ScheduleAppointmentCommand(
+        request.Cpr,
+        request.PatientName,
+        request.AppointmentDate,
+        request.Department,
+        request.DoctorName
+    );
 
-    if (result)
-        return Results.Ok("Appointment scheduled successfully.");
-    else
-        return Results.BadRequest("Failed to schedule the appointment.");
+    var result = await mediator.Send(command);
+
+    if (!result.IsSuccess)
+        return Results.BadRequest(result.Message);
+
+    return Results.Ok(result.Message);
 });
+
 
 app.Run();
 

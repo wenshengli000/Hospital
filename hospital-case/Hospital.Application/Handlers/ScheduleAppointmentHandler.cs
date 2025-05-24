@@ -9,6 +9,7 @@ namespace Hospital.Application.Handlers;
 public class ScheduleAppointmentHandler(
     IAppointmentRepository repository,
     IEnumerable<IDepartmentPolicy> policies,
+    IAppointmentValidator appointmentValidator, 
     ICprValidator cprValidator)
     : IRequestHandler<ScheduleAppointmentCommand, ScheduleResult>
 {
@@ -18,6 +19,9 @@ public class ScheduleAppointmentHandler(
             return ScheduleResult.Failure("Invalid CPR number.");
 
         var appointment = Appointment.Create(cmd.Cpr, cmd.PatientName, cmd.Date, cmd.Department, cmd.Doctor);
+
+        if (!await appointmentValidator.ValidateAsync(appointment))
+            return ScheduleResult.Failure("Invalid appointment request.");
 
         var policy = policies.FirstOrDefault(p =>
             p.DepartmentName.Equals(appointment.Department, StringComparison.OrdinalIgnoreCase));
