@@ -24,6 +24,6 @@ public class GeneralPracticePolicy(ILogger<GeneralPracticePolicy> logger) : IDep
     private bool IsAssignedToGp(string cpr, string doctorName)
     {
         logger.LogDebug("Checking GP assignment for {Cpr} with doctor {Doctor}", cpr, doctorName);
-        return true; // Dummy logic — replace with real service call
+        return true; // Dummy check (To be replaced later)
     }
 }

@@ -19,7 +19,11 @@ public class AppointmentValidator(ILogger<AppointmentValidator> logger) : IAppoi
             return Task.FromResult(ValidationResult.Failure("Doctor name is required."));
 
         if (appointment.AppointmentDate < DateTime.Now)
-            return Task.FromResult(ValidationResult.Failure("Appointment date must be in the future."));
+        {
+            var message = $"Appointment date must be in the future. AppointmentDate:{appointment.AppointmentDate}";
+            logger.LogError(message);
+            return Task.FromResult(ValidationResult.Failure(message));
+        }
 
         return Task.FromResult(ValidationResult.Success());
     }

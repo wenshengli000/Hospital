@@ -1,9 +1,10 @@
 ﻿using Hospital.Domain.Entities;
 using Hospital.Domain.Policies;
+using Microsoft.Extensions.Logging;
 
 namespace Hospital.Infrastructure.Polices;
 
-public class RadiologyPolicy : IDepartmentPolicy
+public class RadiologyPolicy(ILogger<GeneralPracticePolicy> logger) : IDepartmentPolicy
 {
     public string DepartmentName => "Radiology";
     public Task<ValidationResult> ValidateAsync(Appointment appointment)
@@ -19,13 +20,6 @@ public class RadiologyPolicy : IDepartmentPolicy
 
     private bool HasValidReferral(string cpr) => true; 
     private bool HasValidFinancialApproval(string cpr, string department) => true;
-    private bool RequiresReferral(string department)
-    {
-        return department == "Surgery" || department == "Radiology" || department == "Physiotherapy";
-    }
-
-    private bool RequiresFinancialApproval(string department)
-    {
-        return department == "Radiology";
-    }
+    private bool RequiresReferral(string department) => true;
+    private bool RequiresFinancialApproval(string department) => true;
 }

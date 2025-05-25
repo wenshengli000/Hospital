@@ -15,23 +15,32 @@ public class ScheduleAppointmentHandler(
 {
     public async Task<ScheduleResult> Handle(ScheduleAppointmentCommand cmd, CancellationToken ct)
     {
-        if (!await cprValidator.ValidateAsync(cmd.Cpr))
-            return ScheduleResult.Failure("Invalid CPR number.");
+        var validationResult = await cprValidator.ValidateAsync(cmd.Cpr);
+        if (!validationResult.IsSuccess)
+        {
+            return ScheduleResult.Failure(validationResult.ErrorMessage);
+        }
 
         var appointment = Appointment.Create(cmd.Cpr, cmd.PatientName, cmd.Date, cmd.Department, cmd.Doctor);
-
-        if (!await appointmentValidator.ValidateAsync(appointment))
-            return ScheduleResult.Failure("Invalid appointment request.");
+        validationResult = await appointmentValidator.ValidateAsync(appointment);
+        if (!validationResult.IsSuccess)
+        {
+            return ScheduleResult.Failure(validationResult.ErrorMessage);
+        }
 
         var policy = policies.FirstOrDefault(p =>
             p.DepartmentName.Equals(appointment.Department, StringComparison.OrdinalIgnoreCase));
 
         if (policy == null)
+        {
             return ScheduleResult.Failure($"Unsupported department: {appointment.Department}");
+        }
 
-        var validationResult = await policy.ValidateAsync(appointment);
+        validationResult = await policy.ValidateAsync(appointment);
         if (!validationResult.IsSuccess)
+        {
             return ScheduleResult.Failure(validationResult.ErrorMessage);
+        }
 
         await repository.AddAsync(appointment);
         return ScheduleResult.Success("Appointment scheduled successfully.");
