@@ -20,12 +20,14 @@ builder.Services.AddScoped<IDepartmentPolicy, PhysiotherapyPolicy>();
 builder.Services.AddScoped<IDepartmentPolicy, RadiologyPolicy>();
 builder.Services.AddScoped<IDepartmentPolicy, SurgeryPolicy>();
 builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
-builder.Services.AddScoped<IAppointmentValidator, ApointmentValidator>();
+builder.Services.AddScoped<IAppointmentValidator, AppointmentValidator>();
 builder.Services.AddSingleton<ICprValidator, NationalRegistryCprValidator>();
 builder.Services.AddMediatR(cfg =>
 {
     cfg.RegisterServicesFromAssemblyContaining<ScheduleAppointmentHandler>();
 });
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
 
 
 var app = builder.Build();

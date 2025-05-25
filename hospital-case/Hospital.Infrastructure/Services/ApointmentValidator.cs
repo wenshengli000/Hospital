@@ -1,17 +1,19 @@
 ﻿using Hospital.Application.Interfaces;
 using Hospital.Domain.Entities;
+using Microsoft.Extensions.Logging;
 
 namespace Hospital.Infrastructure.Services;
 
-public class ApointmentValidator: IAppointmentValidator
+public class AppointmentValidator(ILogger<AppointmentValidator> logger) : IAppointmentValidator
 {
     public Task<bool> ValidateAsync(Appointment appointment)
     {
-        // Basic validation
-        if (string.IsNullOrEmpty(appointment.Cpr) || string.IsNullOrEmpty(appointment.Department) ||
-            string.IsNullOrEmpty(appointment.DoctorName) || appointment.AppointmentDate < DateTime.Now)
+        if (string.IsNullOrWhiteSpace(appointment.Cpr) ||
+            string.IsNullOrWhiteSpace(appointment.Department) ||
+            string.IsNullOrWhiteSpace(appointment.DoctorName) ||
+            appointment.AppointmentDate < DateTime.Now)
         {
-            Console.WriteLine("Invalid appointment request.");
+            logger.LogError("Invalid appointment request: {@Appointment}", appointment);
             return Task.FromResult(false);
         }
         return Task.FromResult(true);
